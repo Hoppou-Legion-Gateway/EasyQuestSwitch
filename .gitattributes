@@ -1,0 +1,2 @@
+# Force LF line endings because CRLF sucks
+* text=auto eol=lf

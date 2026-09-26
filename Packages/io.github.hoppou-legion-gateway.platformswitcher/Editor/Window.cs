@@ -61,18 +61,9 @@ namespace PlatformSwitcher
         private void CreatePlatformDependantHeader(BuildTarget buildTarget)
         {
             headerBG = new Texture2D(1, 1);
-            switch (buildTarget)
-            {
-                case BuildTarget.StandaloneWindows64:
-                    headerBG.SetPixel(0, 0, new Color(0.15f, 0.5f, 0.75f));
-                    break;
-                case BuildTarget.Android:
-                    headerBG.SetPixel(0, 0, new Color(0, 0.8f, 0.3f));
-                    break;
-                default:
-                    headerBG.SetPixel(0, 0, new Color(0.75f, 0.15f, 0.2f));
-                    break;
-            }
+            if (Platform.IsPC(buildTarget)) headerBG.SetPixel(0, 0, new Color(0.15f, 0.5f, 0.75f));
+            else if (Platform.IsMobile(buildTarget)) headerBG.SetPixel(0, 0, new Color(0, 0.8f, 0.3f));
+            else headerBG.SetPixel(0, 0, new Color(0.75f, 0.15f, 0.2f));
             headerBG.Apply();
         }
 
@@ -464,7 +455,7 @@ namespace PlatformSwitcher
                     using (new GUILayout.HorizontalScope())
                     {
                         if (GUILayout.Button(Localization.Current.SettingsApplyPC)) data.ApplyTarget(BuildTarget.StandaloneWindows64);
-                        if (GUILayout.Button(Localization.Current.SettingsApplyQuest)) data.ApplyTarget(BuildTarget.Android);
+                        if (GUILayout.Button(Localization.Current.SettingsApplyQuest)) data.ApplyTarget(Platform.CurrentOrDefaultMobile());
                     }
                     if (GUILayout.Button(Localization.Current.SettingsRemoveEQS, GUILayout.Height(32)))
                     {

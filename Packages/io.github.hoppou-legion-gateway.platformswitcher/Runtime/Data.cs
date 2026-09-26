@@ -118,7 +118,7 @@ namespace PlatformSwitcher
         public void OnChangedBuildTarget(BuildTarget newTarget)
         {
             buildInfo.NewBuildTarget = newTarget;
-            if (buildInfo.CachedBuildTarget != buildInfo.NewBuildTarget && Objects != null) ApplyTarget(buildInfo.NewBuildTarget);
+            if (!Platform.SharesValues(buildInfo.CachedBuildTarget, buildInfo.NewBuildTarget) && Objects != null) ApplyTarget(buildInfo.NewBuildTarget);
             buildInfo.CachedBuildTarget = buildInfo.NewBuildTarget;
         }
 
@@ -145,7 +145,7 @@ namespace PlatformSwitcher
             buildInfo.NewBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             if (EditorPrefs.GetBool(Prefs.PromptForPlatformChange, true))
             {
-                if (buildInfo.CachedBuildTarget != buildInfo.NewBuildTarget && Objects != null)
+                if (!Platform.SharesValues(buildInfo.CachedBuildTarget, buildInfo.NewBuildTarget) && Objects != null)
                 {
                     string displayDialog = string.Format(Localization.Current.PopupTargetChanged, buildInfo.NewBuildTarget.ToString());
                     if (EditorUtility.DisplayDialog("", displayDialog, Localization.Current.PopupAccept, Localization.Current.PopupDecline))
@@ -159,7 +159,7 @@ namespace PlatformSwitcher
 
         public void ApplyTarget(BuildTarget newTarget)
         {
-            if (newTarget == BuildTarget.StandaloneWindows64 || newTarget == BuildTarget.Android)
+            if (Platform.IsSupported(newTarget))
             {
                 for (int i = 0; i < Objects.Count; i++)
                 {

@@ -55,7 +55,7 @@ namespace PlatformSwitcher.Fields
 
             EditorGUI.LabelField(optionARect, "PC");
             EditorGUI.DrawRect(dividerRect, Color.grey);
-            EditorGUI.LabelField(optionBRect, "Quest");
+            EditorGUI.LabelField(optionBRect, "Mobile");
         }
     }
 

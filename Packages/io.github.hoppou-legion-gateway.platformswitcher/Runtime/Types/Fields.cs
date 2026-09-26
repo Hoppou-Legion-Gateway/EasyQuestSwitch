@@ -22,15 +22,9 @@ namespace PlatformSwitcher.Fields
 
         public T Get(BuildTarget buildTarget)
         {
-            switch (buildTarget)
-            {
-                case BuildTarget.StandaloneWindows64:
-                    return PC;
-                case BuildTarget.Android:
-                    return Quest;
-                default:
-                    return default(T);
-            }
+            if (Platform.IsPC(buildTarget)) return PC;
+            if (Platform.IsMobile(buildTarget)) return Quest;
+            return default(T);
         }
     }
 

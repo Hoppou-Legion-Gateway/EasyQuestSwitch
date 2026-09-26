@@ -41,27 +41,13 @@ namespace PlatformSwitcher.Types
             Material material = (Material)type;
             if (Shader.Get(buildTarget) != null)
             {
-                switch (buildTarget)
-                {
-                    case BuildTarget.StandaloneWindows:
-                        ShaderPath.PC = Shader.Get(buildTarget).name;
-                        break;
-                    case BuildTarget.Android:
-                        ShaderPath.Quest = Shader.Get(buildTarget).name;
-                        break;
-                }
+                if (Platform.IsPC(buildTarget)) ShaderPath.PC = Shader.Get(buildTarget).name;
+                else if (Platform.IsMobile(buildTarget)) ShaderPath.Quest = Shader.Get(buildTarget).name;
             }
             else if (Shader.Get(buildTarget) == null && !string.IsNullOrEmpty(ShaderPath.Get(buildTarget)))
             {
-                switch (buildTarget)
-                {
-                    case BuildTarget.StandaloneWindows:
-                        Shader.PC = UnityEngine.Shader.Find(ShaderPath.PC);
-                        break;
-                    case BuildTarget.Android:
-                        Shader.Quest = UnityEngine.Shader.Find(ShaderPath.Quest);
-                        break;
-                }
+                if (Platform.IsPC(buildTarget)) Shader.PC = UnityEngine.Shader.Find(ShaderPath.PC);
+                else if (Platform.IsMobile(buildTarget)) Shader.Quest = UnityEngine.Shader.Find(ShaderPath.Quest);
             }
 
             if (Shader.Get(buildTarget) == null)

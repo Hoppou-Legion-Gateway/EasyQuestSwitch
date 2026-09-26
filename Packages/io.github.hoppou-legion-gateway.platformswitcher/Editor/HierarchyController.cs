@@ -18,7 +18,7 @@ namespace PlatformSwitcher
             EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyItemGUI;
         }
 
-        public static void InitializeEQSHierarchy()
+        public static void InitializeHierarchy()
         {
             if (logo == null)
             {
@@ -51,7 +51,7 @@ namespace PlatformSwitcher
 
             if (!initialized)
             {
-                InitializeEQSHierarchy();
+                InitializeHierarchy();
             }
 
             if (!showHierarchyIcon)

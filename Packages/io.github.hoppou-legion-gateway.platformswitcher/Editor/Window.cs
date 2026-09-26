@@ -24,7 +24,7 @@ namespace PlatformSwitcher
         }
 
         private SerializedObject serializedObject;
-        private SerializedProperty eqsData;
+        private SerializedProperty objectsProperty;
         private ReorderableList reorderableList;
 
         private Data _data;
@@ -50,7 +50,7 @@ namespace PlatformSwitcher
         private bool settingsMenu;
         private int chosenLanguage;
         private int chosenListFormat;
-        private bool revealEQSdata = false;
+        private bool revealData = false;
         private float sideOffset = 0f;
         private bool showHierarchyIcon = true;
         private bool promptForPlatformChange = true;
@@ -105,8 +105,8 @@ namespace PlatformSwitcher
 
             if (data != null)
             {
-                SetupEQS();
-                revealEQSdata = data.gameObject.hideFlags == HideFlags.HideInHierarchy ? false : true;
+                SetupData();
+                revealData = data.gameObject.hideFlags == HideFlags.HideInHierarchy ? false : true;
             }
         }
 
@@ -126,18 +126,18 @@ namespace PlatformSwitcher
             }
         }
 
-        private void CreateEQS()
+        private void CreateData()
         {
             GameObject sceneRefGO = new GameObject(Data.GameObjectName);
             Data sceneRef = sceneRefGO.AddComponent<Data>();
             sceneRefGO.tag = "EditorOnly";
             sceneRefGO.hideFlags = HideFlags.HideInHierarchy;
             data = sceneRef;
-            SetupEQS();
+            SetupData();
         }
 
-        private void RevealEQSData() { if (data != null) data.gameObject.hideFlags = HideFlags.None; }
-        private void HideEQSData()
+        private void RevealData() { if (data != null) data.gameObject.hideFlags = HideFlags.None; }
+        private void HideData()
         {
             if (data != null)
             {
@@ -146,10 +146,10 @@ namespace PlatformSwitcher
             }
         }
 
-        private void SetupEQS()
+        private void SetupData()
         {
             serializedObject = new SerializedObject(data);
-            eqsData = serializedObject.FindProperty("Objects");
+            objectsProperty = serializedObject.FindProperty("Objects");
 
             if (chosenListFormat == 0) // Simple
             {
@@ -161,13 +161,13 @@ namespace PlatformSwitcher
             }
             else if (chosenListFormat == 1) // Reorderable
             {
-                reorderableList = new ReorderableList(serializedObject, eqsData, true, false, false, false);
+                reorderableList = new ReorderableList(serializedObject, objectsProperty, true, false, false, false);
                 RegisterReorderableListCallbacks();
                 reorderableList.showDefaultBackground = false;
                 reorderableList.headerHeight = 0;
             }
 
-            HierarchyController.InitializeEQSHierarchy();
+            HierarchyController.InitializeHierarchy();
         }
 
         private void RegisterReorderableListCallbacks()
@@ -186,7 +186,7 @@ namespace PlatformSwitcher
             reorderableList.onMouseDragCallback -= OnMouseDragCallback;
         }
 
-        private void DestroyEQS()
+        private void DestroyData()
         {
             serializedObject = null;
             DestroyImmediate(data.gameObject);
@@ -387,10 +387,10 @@ namespace PlatformSwitcher
                     settingsButtonRect.y += 3;
                     settingsMenu = GUI.Toggle(settingsButtonRect, settingsMenu, Localization.Current.SettingsButton, new GUIStyle("Button"));
 
-                    string eqsVersion = $"v{Version}";
-                    versionLabelRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(eqsVersion)).x - 2;
+                    string versionLabel = $"v{Version}";
+                    versionLabelRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(versionLabel)).x - 2;
                     versionLabelRect.yMin = scope.rect.yMax - EditorGUIUtility.singleLineHeight;
-                    GUI.Label(versionLabelRect, eqsVersion);
+                    GUI.Label(versionLabelRect, versionLabel);
                 }
             }
 
@@ -444,7 +444,7 @@ namespace PlatformSwitcher
                         chosenListFormat = EditorGUILayout.Popup(chosenListFormat, Localization.Current.SettingsListFormatArray);
                         if (changeListFormat.changed)
                         {
-                            SetupEQS();
+                            SetupData();
                             EditorPrefs.SetInt(Prefs.ListFormat, chosenListFormat);
                         }
                     }
@@ -455,13 +455,13 @@ namespace PlatformSwitcher
                     using (new GUILayout.HorizontalScope())
                     {
                         if (GUILayout.Button(Localization.Current.SettingsApplyPC)) data.ApplyTarget(BuildTarget.StandaloneWindows64);
-                        if (GUILayout.Button(Localization.Current.SettingsApplyQuest)) data.ApplyTarget(Platform.CurrentOrDefaultMobile());
+                        if (GUILayout.Button(Localization.Current.SettingsApplyMobile)) data.ApplyTarget(Platform.CurrentOrDefaultMobile());
                     }
-                    if (GUILayout.Button(Localization.Current.SettingsRemoveEQS, GUILayout.Height(32)))
+                    if (GUILayout.Button(Localization.Current.SettingsRemoveFromScene, GUILayout.Height(32)))
                     {
                         if (EditorUtility.DisplayDialog(string.Empty, Localization.Current.PopupDeleteWarning, Localization.Current.PopupAccept, Localization.Current.PopupDecline))
                         {
-                            DestroyEQS();
+                            DestroyData();
                         }
                     }
                     EditorGUILayout.Space(10);
@@ -491,7 +491,7 @@ namespace PlatformSwitcher
                         {
                             EditorPrefs.SetFloat(Prefs.HierarchySideOffset, sideOffset);
                             EditorPrefs.SetBool(Prefs.ShowHierarchyIcon, showHierarchyIcon);
-                            HierarchyController.InitializeEQSHierarchy();
+                            HierarchyController.InitializeHierarchy();
                             EditorApplication.DirtyHierarchyWindowSorting();
                         }
                     }
@@ -514,16 +514,16 @@ namespace PlatformSwitcher
                             {
                                 using (var toggle = new EditorGUI.ChangeCheckScope())
                                 {
-                                    revealEQSdata = GUILayout.Toggle(revealEQSdata, Localization.Current.SettingsDebugReveal);
+                                    revealData = GUILayout.Toggle(revealData, Localization.Current.SettingsDebugReveal);
                                     if (toggle.changed)
                                     {
-                                        if (revealEQSdata)
+                                        if (revealData)
                                         {
-                                            RevealEQSData();
+                                            RevealData();
                                         }
                                         else
                                         {
-                                            HideEQSData();
+                                            HideData();
                                         }
                                     }
                                 }
@@ -535,7 +535,7 @@ namespace PlatformSwitcher
                     {
                         GUILayout.Box(Localization.Current.SettingsFeedback, EditorStyles.wordWrappedLabel);
                         if (GUILayout.Button(Localization.Current.SettingsTwitter, GUILayout.ExpandHeight(true))) Application.OpenURL("https://twitter.com/JordoVR");
-                        if (GUILayout.Button(Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/JordoVR/PlatformSwitcher");
+                        if (GUILayout.Button(Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/Hoppou-Legion-Gateway/PlatformSwitcher");
                     }
 
                 }
@@ -545,7 +545,7 @@ namespace PlatformSwitcher
             {
                 if (data == null)
                 {
-                    if (GUILayout.Button(Localization.Current.ListSetupEQS)) CreateEQS();
+                    if (GUILayout.Button(Localization.Current.ListSetupInScene)) CreateData();
                 }
                 else
                 {
@@ -554,18 +554,18 @@ namespace PlatformSwitcher
                     {
                         if (GUILayout.Toggle(false, Localization.Current.ListExpand, EditorStyles.toolbarButton))
                         {
-                            for (int i = 0; i < eqsData.arraySize; i++)
+                            for (int i = 0; i < objectsProperty.arraySize; i++)
                             {
-                                SerializedProperty element = eqsData.GetArrayElementAtIndex(i);
+                                SerializedProperty element = objectsProperty.GetArrayElementAtIndex(i);
                                 if (element.FindPropertyRelative("Type").objectReferenceValue != null) element.FindPropertyRelative("Foldout").boolValue = true;
                             }
                             Repaint();
                         }
                         if (GUILayout.Toggle(false, Localization.Current.ListFold, EditorStyles.toolbarButton))
                         {
-                            for (int i = 0; i < eqsData.arraySize; i++)
+                            for (int i = 0; i < objectsProperty.arraySize; i++)
                             {
-                                SerializedProperty element = eqsData.GetArrayElementAtIndex(i);
+                                SerializedProperty element = objectsProperty.GetArrayElementAtIndex(i);
                                 element.FindPropertyRelative("Foldout").boolValue = false;
                             }
                             Repaint();
@@ -574,7 +574,7 @@ namespace PlatformSwitcher
                         {
                             if (chosenListFormat == 0) // Simple
                             {
-                                OnAddCallback(eqsData);
+                                OnAddCallback(objectsProperty);
                             }
                             else if (chosenListFormat == 1) // Reorderable
                             {
@@ -599,9 +599,9 @@ namespace PlatformSwitcher
 
                         if (chosenListFormat == 0) // Simple
                         {
-                            for (int index = 0; index < eqsData.arraySize; index++)
+                            for (int index = 0; index < objectsProperty.arraySize; index++)
                             {
-                                SerializedProperty element = eqsData.GetArrayElementAtIndex(index);
+                                SerializedProperty element = objectsProperty.GetArrayElementAtIndex(index);
                                 SerializedProperty elementTarget = element.FindPropertyRelative("Target");
 
 
@@ -610,12 +610,12 @@ namespace PlatformSwitcher
                                     if (GUILayout.Button("\u2005\u2006▲", EditorStyles.toolbarButton, GUILayout.Width(24)))
                                     {
                                         if (index == 0) break;
-                                        eqsData.MoveArrayElement(index, index - 1);
+                                        objectsProperty.MoveArrayElement(index, index - 1);
                                     }
                                     if (GUILayout.Button("\u2005\u2006▼", EditorStyles.toolbarButton, GUILayout.Width(24)))
                                     {
-                                        if (index == eqsData.arraySize) break;
-                                        eqsData.MoveArrayElement(index, index + 1);
+                                        if (index == objectsProperty.arraySize) break;
+                                        objectsProperty.MoveArrayElement(index, index + 1);
                                     }
                                     EditorGUI.BeginChangeCheck();
                                     EditorGUILayout.PropertyField(elementTarget, new GUIContent());
@@ -627,7 +627,7 @@ namespace PlatformSwitcher
                                     }
                                     if (GUILayout.Button("\u2005\u2006-", EditorStyles.toolbarButton, GUILayout.Width(24)))
                                     {
-                                        OnRemoveCallback(eqsData, index);
+                                        OnRemoveCallback(objectsProperty, index);
                                         continue;
                                     }
                                 }
@@ -702,9 +702,9 @@ namespace PlatformSwitcher
                             foreach (var draggedObject in DragAndDrop.objectReferences)
                             {
                                 serializedObject?.Update();
-                                int index = eqsData.arraySize;
-                                eqsData.arraySize++;
-                                SerializedProperty element = eqsData.GetArrayElementAtIndex(index);
+                                int index = objectsProperty.arraySize;
+                                objectsProperty.arraySize++;
+                                SerializedProperty element = objectsProperty.GetArrayElementAtIndex(index);
                                 element.FindPropertyRelative("Target").objectReferenceValue = draggedObject;
                                 element.FindPropertyRelative("Type").objectReferenceValue = null;
                                 element.FindPropertyRelative("Foldout").boolValue = false;

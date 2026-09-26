@@ -112,12 +112,12 @@ namespace PlatformSwitcher.Fields
             EditorGUI.BeginProperty(position, label, property);
 
             SerializedProperty PC = property.FindPropertyRelative("PC");
-            SerializedProperty Quest = property.FindPropertyRelative("Quest");
+            SerializedProperty Mobile = property.FindPropertyRelative("Mobile");
 
             EditorGUI.PrefixLabel(labelRect, GUIUtility.GetControlID(FocusType.Passive), label);
             EditorGUI.PropertyField(optionARect, PC, GUIContent.none);
             EditorGUI.DrawRect(dividerRect, Color.grey);
-            EditorGUI.PropertyField(optionBRect, Quest, GUIContent.none);
+            EditorGUI.PropertyField(optionBRect, Mobile, GUIContent.none);
             EditorGUI.EndProperty();
         }
     }
@@ -133,12 +133,12 @@ namespace PlatformSwitcher.Fields
             EditorGUI.BeginProperty(position, label, property);
 
             SerializedProperty PC = property.FindPropertyRelative("PC");
-            SerializedProperty Quest = property.FindPropertyRelative("Quest");
+            SerializedProperty Mobile = property.FindPropertyRelative("Mobile");
 
             EditorGUI.PrefixLabel(labelRect, GUIUtility.GetControlID(FocusType.Passive), label);
             PC.stringValue = EditorGUI.TagField(optionARect, PC.stringValue);
             EditorGUI.DrawRect(dividerRect, Color.grey);
-            Quest.stringValue = EditorGUI.TagField(optionBRect, Quest.stringValue);
+            Mobile.stringValue = EditorGUI.TagField(optionBRect, Mobile.stringValue);
             EditorGUI.EndProperty();
         }
     }
@@ -154,12 +154,12 @@ namespace PlatformSwitcher.Fields
             EditorGUI.BeginProperty(position, label, property);
 
             SerializedProperty PC = property.FindPropertyRelative("PC");
-            SerializedProperty Quest = property.FindPropertyRelative("Quest");
+            SerializedProperty Mobile = property.FindPropertyRelative("Mobile");
 
             EditorGUI.PrefixLabel(labelRect, GUIUtility.GetControlID(FocusType.Passive), label);
             PC.intValue = EditorGUI.LayerField(optionARect, PC.intValue);
             EditorGUI.DrawRect(dividerRect, Color.grey);
-            Quest.intValue = EditorGUI.LayerField(optionBRect, Quest.intValue);
+            Mobile.intValue = EditorGUI.LayerField(optionBRect, Mobile.intValue);
             EditorGUI.EndProperty();
         }
     }
@@ -175,12 +175,12 @@ namespace PlatformSwitcher.Fields
             EditorGUI.BeginProperty(position, label, property);
 
             SerializedProperty PC = property.FindPropertyRelative("PC");
-            SerializedProperty Quest = property.FindPropertyRelative("Quest");
+            SerializedProperty Mobile = property.FindPropertyRelative("Mobile");
 
             EditorGUI.PrefixLabel(labelRect, GUIUtility.GetControlID(FocusType.Passive), label);
             PC.intValue = EditorGUI.MaskField(optionARect, PC.intValue, PC.enumDisplayNames);
             EditorGUI.DrawRect(dividerRect, Color.grey);
-            Quest.intValue = EditorGUI.MaskField(optionBRect, Quest.intValue, Quest.enumDisplayNames);
+            Mobile.intValue = EditorGUI.MaskField(optionBRect, Mobile.intValue, Mobile.enumDisplayNames);
             EditorGUI.EndProperty();
         }
     }

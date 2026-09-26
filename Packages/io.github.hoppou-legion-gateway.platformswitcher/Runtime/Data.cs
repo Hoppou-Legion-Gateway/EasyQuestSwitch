@@ -16,12 +16,10 @@ namespace PlatformSwitcher
     public class Data : MonoBehaviour
     {
         public const string GameObjectName = "PlatformSwitcherData";
-        // Name used by scenes saved before the rename
-        private const string LegacyGameObjectName = "EQS_DATA";
 
         public static Data FindInScene()
         {
-            GameObject go = GameObject.Find(GameObjectName) ?? GameObject.Find(LegacyGameObjectName);
+            GameObject go = GameObject.Find(GameObjectName);
             return go != null ? go.GetComponent<Data>() : null;
         }
 

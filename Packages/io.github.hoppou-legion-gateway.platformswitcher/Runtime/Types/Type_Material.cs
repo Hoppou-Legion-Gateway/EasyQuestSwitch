@@ -42,12 +42,12 @@ namespace PlatformSwitcher.Types
             if (Shader.Get(buildTarget) != null)
             {
                 if (Platform.IsPC(buildTarget)) ShaderPath.PC = Shader.Get(buildTarget).name;
-                else if (Platform.IsMobile(buildTarget)) ShaderPath.Quest = Shader.Get(buildTarget).name;
+                else if (Platform.IsMobile(buildTarget)) ShaderPath.Mobile = Shader.Get(buildTarget).name;
             }
             else if (Shader.Get(buildTarget) == null && !string.IsNullOrEmpty(ShaderPath.Get(buildTarget)))
             {
                 if (Platform.IsPC(buildTarget)) Shader.PC = UnityEngine.Shader.Find(ShaderPath.PC);
-                else if (Platform.IsMobile(buildTarget)) Shader.Quest = UnityEngine.Shader.Find(ShaderPath.Quest);
+                else if (Platform.IsMobile(buildTarget)) Shader.Mobile = UnityEngine.Shader.Find(ShaderPath.Mobile);
             }
 
             if (Shader.Get(buildTarget) == null)

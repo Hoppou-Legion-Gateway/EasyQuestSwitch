@@ -13,17 +13,17 @@ namespace PlatformSwitcher.Fields
     public class SharedObject<T>
     {
         public T PC;
-        public T Quest;
+        public T Mobile;
 
         public void Setup(T obj)
         {
-            PC = Quest = obj;
+            PC = Mobile = obj;
         }
 
         public T Get(BuildTarget buildTarget)
         {
             if (Platform.IsPC(buildTarget)) return PC;
-            if (Platform.IsMobile(buildTarget)) return Quest;
+            if (Platform.IsMobile(buildTarget)) return Mobile;
             return default(T);
         }
     }

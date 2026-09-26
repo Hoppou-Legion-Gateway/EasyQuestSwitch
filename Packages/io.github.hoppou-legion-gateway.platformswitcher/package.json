@@ -7,14 +7,8 @@
 	"author": {
 		"name": "Hoppou Legion Gateway",
 		"email": "me@hoppou.dev",
-		"url": "https://github.com/Hoppou-Legion-Gateway/EasyQuestSwitch"
+		"url": "https://github.com/Hoppou-Legion-Gateway/PlatformSwitcher"
 	},
 	"gitDependencies": {},
-	"vpmDependencies": {},
-	"legacyFolders": {
-		"Assets\\EasyQuestSwitch": ""
-	},
-	"legacyPackages": [
-		"vrchat.jordo.easyquestswitch"
-	]
+	"vpmDependencies": {}
 }

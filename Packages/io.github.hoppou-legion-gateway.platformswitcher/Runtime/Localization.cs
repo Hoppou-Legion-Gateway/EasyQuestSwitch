@@ -43,8 +43,8 @@ namespace PlatformSwitcher
             public string SettingsListFormat;
             public string[] SettingsListFormatArray;
             public string SettingsApplyPC;
-            public string SettingsApplyQuest;
-            public string SettingsRemoveEQS;
+            public string SettingsApplyMobile;
+            public string SettingsRemoveFromScene;
             public string SettingsCacheWarning;
             public string SettingsAssetPipelineV2;
             public string SettingsCacheButton;
@@ -64,7 +64,7 @@ namespace PlatformSwitcher
             public string PopupAccept;
             public string PopupDecline;
 
-            public string ListSetupEQS;
+            public string ListSetupInScene;
             public string ListExpand;
             public string ListFold;
             public string ListDragAndDrop;

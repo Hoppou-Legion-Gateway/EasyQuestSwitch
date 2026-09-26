@@ -12,7 +12,10 @@ namespace PlatformSwitcher
 
     public class Window : EditorWindow
     {
-        private const string version = "1.4.0";
+        // Read from package.json so the window always shows the installed version
+        private static string version;
+        private static string Version =>
+            version ??= UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(Window).Assembly)?.version ?? "unknown";
 
         [MenuItem("Window/Platform Switcher")]
         public static void ShowWindow()
@@ -393,10 +396,10 @@ namespace PlatformSwitcher
                     settingsButtonRect.y += 3;
                     settingsMenu = GUI.Toggle(settingsButtonRect, settingsMenu, Localization.Current.SettingsButton, new GUIStyle("Button"));
 
-                    string eqsVersion = $"v{version}";
+                    string eqsVersion = $"v{Version}";
                     versionLabelRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(eqsVersion)).x - 2;
                     versionLabelRect.yMin = scope.rect.yMax - EditorGUIUtility.singleLineHeight;
-                    GUI.Label(versionLabelRect, $"v{version}");
+                    GUI.Label(versionLabelRect, eqsVersion);
                 }
             }
 

@@ -10,22 +10,33 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   PACKAGE_NAME: io.github.hoppou-legion-gateway.platformswitcher
   CI_PROJECT: .github/ci-project
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
         with:
           dotnet-version: 8.0.x
-      - uses: anatawa12/sh-actions/setup-vrc-get@master
+      - name: Setup vrc-get
+        uses: anatawa12/sh-actions/setup-vrc-get@1d155c7a26bcd0a54ffd9cb38fd66ab0d32d23cd # master
       - name: Install package into CI Unity project with vrc-get
         run: |
           # Stage a clean copy of the package (no .git/.github dot-folders)
@@ -35,9 +46,10 @@ jobs:
           vrc-get user-package add "$PKG_DIR"
           vrc-get install -y --project "$CI_PROJECT" \
             "$PACKAGE_NAME"
-      - uses: anatawa12/sh-actions/resolve-vpm-packages@master
-        with:
-          project-path: ${{ env.CI_PROJECT }}
+      - name: Resolve VPM packages
+        run: |
+          vrc-get resolve --project "$CI_PROJECT"
+          vrc-get info project --project "$CI_PROJECT"
       - name: Restore dependencies
         run: dotnet restore "$CI_PROJECT/PlatformSwitcher.CI.csproj"
       - name: Build

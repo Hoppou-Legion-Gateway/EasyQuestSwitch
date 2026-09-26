@@ -70,3 +70,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 TODO.txt
 TODO.txt.meta
+
+# Agents
+.pi/

@@ -1,12 +1,15 @@
 # Platform Switcher
+
 Platform Switcher is a Unity editor tool developed for VRChat world creators, it can automate changes to components within a scene as soon as the build platform is changed from PC to Mobile or vice versa.
 
 Based on [EasyQuestSwitch](https://github.com/vrchat-community/EasyQuestSwitch) by Jordo.
 
 ## Adding a new localization
+
 It is possible to create your own localizations by creating a new JSON file in `Packages/io.github.hoppou-legion-gateway.platformswitcher/Runtime/Resources/PlatformSwitcher/Localizations/`, use `en.json` as a template.
 
 ## Adding custom Types
+
 Tutorial TBD, but you can check `Packages/io.github.hoppou-legion-gateway.platformswitcher/Runtime/Types/` and try to figure it out.
 
 ![](https://i.imgur.com/aYvf4yl.png)

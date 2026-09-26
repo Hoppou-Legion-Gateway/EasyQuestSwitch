@@ -78,9 +78,6 @@ crashlytics-build.properties
 TODO.txt
 TODO.txt.meta
 
-# Project Settings Folder
-/ProjectSettings/
-
 # Assets Folder. Package is under Packages/
 /Assets/
 

@@ -53,4 +53,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore "$CI_PROJECT/PlatformSwitcher.CI.csproj"
       - name: Build
-        run: dotnet build --no-restore "$CI_PROJECT/PlatformSwitcher.CI.csproj"
+        # Compile the vrc-get installed copy, not the checkout itself
+        run: |
+          dotnet build --no-restore "$CI_PROJECT/PlatformSwitcher.CI.csproj" \
+            -p:PackageSourceDir="$PWD/$CI_PROJECT/Packages/$PACKAGE_NAME/"

@@ -2,5 +2,6 @@
 /Packages/*/
 /bin/
 /obj/
-# keep the CI compile project despite the root *.csproj rule
+# keep the CI compile project/solution despite the root *.csproj/*.sln rules
 !*.csproj
+!*.sln

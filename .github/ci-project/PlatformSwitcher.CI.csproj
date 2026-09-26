@@ -1,8 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
-    CI-only compile check. Builds the package sources that vrc-get installed into
-    Packages/ against Unity reference assemblies, with UNITY_EDITOR defined.
-    VRChat SDK / Bakery specific types are behind their own defines and are skipped.
+    Compiles the package sources against Unity reference assemblies with
+    UNITY_EDITOR defined. VRChat SDK / Bakery specific types are behind their
+    own defines and are skipped.
+
+    Local/IDE: compiles the repo sources directly (default PackageSourceDir).
+    CI: pass -p:PackageSourceDir=<vrc-get installed package dir>/ to compile
+    the copy that vrc-get installed into Packages/.
   -->
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -11,7 +15,7 @@
     <AssemblyName>PlatformSwitcher.CI</AssemblyName>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
-    <PackageSourceDir>$(MSBuildThisFileDirectory)Packages/io.github.hoppou-legion-gateway.platformswitcher/</PackageSourceDir>
+    <PackageSourceDir Condition="'$(PackageSourceDir)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '..'))</PackageSourceDir>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <!-- Unity reference assemblies target .NET Framework; silence version-mismatch noise -->
     <NoWarn>$(NoWarn);MSB3277;NU1701;CS0618;CS0649;CS0414;CS0169</NoWarn>
@@ -32,6 +36,6 @@
 
   <Target Name="EnsurePackageInstalled" BeforeTargets="BeforeBuild">
     <Error Condition="!Exists('$(PackageSourceDir)package.json')"
-           Text="Package not found at $(PackageSourceDir). Install it with vrc-get first." />
+           Text="package.json not found in $(PackageSourceDir)." />
   </Target>
 </Project>

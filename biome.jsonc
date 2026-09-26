@@ -1,0 +1,22 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+
+	"files": {
+		"includes": ["**"],
+		"ignoreUnknown": true
+	},
+
+	"html": {
+		"experimentalFullSupportEnabled": true,
+		"formatter": { "enabled": true }
+	},
+	"grit": {
+		"formatter": { "enabled": true }
+	},
+
+	"vcs": {
+		"enabled": true,
+		"useIgnoreFile": true,
+		"clientKind": "git"
+	}
+}

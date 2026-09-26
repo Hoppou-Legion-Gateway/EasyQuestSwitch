@@ -80,6 +80,8 @@ namespace PlatformSwitcher
             {
                 EditorSceneManager.activeSceneChangedInEditMode += OnSceneChanged;
                 Undo.undoRedoPerformed += OnUndoRedo;
+                // Redraw once late-imported assets (localizations, logo) become available
+                EditorApplication.projectChanged += Repaint;
                 subscribedToEvents = true;
             }
 
@@ -87,7 +89,6 @@ namespace PlatformSwitcher
             CreatePlatformDependantHeader(EditorUserBuildSettings.activeBuildTarget);
             logo = (Texture2D)Resources.Load("PlatformSwitcher/Logo", typeof(Texture2D));
 
-            Localization.LoadLanguages();
             // Prior to 1.2, language preferences were set using the index order instead of the language code
             if (System.String.IsNullOrEmpty(EditorPrefs.GetString(Prefs.Language, null)))
             {
@@ -102,7 +103,7 @@ namespace PlatformSwitcher
                         break;
                 }
             }
-            chosenLanguage = Localization.SetLanguage(EditorPrefs.GetString(Prefs.Language, "en"));
+            if (Localization.LoadLanguages()) ApplyLanguagePreference();
             chosenListFormat = EditorPrefs.GetInt(Prefs.ListFormat, 0); // 0 - Simple, 1 - Reorderable
             sideOffset = EditorPrefs.GetFloat(Prefs.HierarchySideOffset, 0f);
             showHierarchyIcon = EditorPrefs.GetBool(Prefs.ShowHierarchyIcon, true);
@@ -115,12 +116,18 @@ namespace PlatformSwitcher
             }
         }
 
+        private void ApplyLanguagePreference()
+        {
+            chosenLanguage = Localization.SetLanguage(EditorPrefs.GetString(Prefs.Language, "en"));
+        }
+
         private void OnDestroy()
         {
             if (subscribedToEvents)
             {
                 EditorSceneManager.activeSceneChangedInEditMode -= OnSceneChanged;
                 Undo.undoRedoPerformed -= OnUndoRedo;
+                EditorApplication.projectChanged -= Repaint;
                 subscribedToEvents = false;
             }
         }
@@ -348,6 +355,18 @@ namespace PlatformSwitcher
 
         private void OnGUI()
         {
+            // Scripts can reload before a package update has imported the assets
+            if (!Localization.IsLoaded)
+            {
+                if (!Localization.LoadLanguages())
+                {
+                    EditorGUILayout.HelpBox("Waiting for Platform Switcher assets to finish importing...", MessageType.Info);
+                    return;
+                }
+                ApplyLanguagePreference();
+            }
+            if (logo == null) logo = (Texture2D)Resources.Load("PlatformSwitcher/Logo", typeof(Texture2D));
+
             if (serializedObject != null) serializedObject.Update();
 
             // Header

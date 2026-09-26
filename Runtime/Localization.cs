@@ -17,16 +17,19 @@ namespace PlatformSwitcher
             {
                 if (_current == null)
                 {
-                    if (AvailableLanguages == null)
-                    {
-                        LoadLanguages();
-                    }
-                    SetLanguage(EditorPrefs.GetInt(Prefs.Language, 0));
+                    if (!IsLoaded && !LoadLanguages())
+                        throw new InvalidOperationException("Platform Switcher localization files have not been imported yet.");
+                    // Since 1.2 the language is stored as a code, before that as an index
+                    string code = EditorPrefs.GetString(Prefs.Language, string.Empty);
+                    if (string.IsNullOrEmpty(code)) SetLanguage(EditorPrefs.GetInt(Prefs.Language, 0));
+                    else SetLanguage(code);
                 }
                 return _current;
             }
         }
         public static LocalizedLanguage[] AvailableLanguages;
+
+        public static bool IsLoaded => AvailableLanguages != null && AvailableLanguages.Length > 0;
 
         [Serializable]
         public class LocalizedLanguage
@@ -75,15 +78,18 @@ namespace PlatformSwitcher
             public string LogSwitchUnsupported;
         }
 
-        public static void LoadLanguages()
+        public static bool LoadLanguages()
         {
             UnityEngine.Object[] JSONlanguages = Resources.LoadAll("PlatformSwitcher/Localizations", typeof(TextAsset));
-            AvailableLanguages = new LocalizedLanguage[JSONlanguages.Length];
+            if (JSONlanguages.Length == 0) return false;
+
+            LocalizedLanguage[] languages = new LocalizedLanguage[JSONlanguages.Length];
             for (int i = 0; i < JSONlanguages.Length; i++)
             {
-                AvailableLanguages[i] = JsonUtility.FromJson<LocalizedLanguage>(JSONlanguages[i].ToString());
-                AvailableLanguages[i].Code = JSONlanguages[i].name;
+                languages[i] = JsonUtility.FromJson<LocalizedLanguage>(JSONlanguages[i].ToString());
+                languages[i].Code = JSONlanguages[i].name;
             }
+            AvailableLanguages = languages;
             Array.Sort(AvailableLanguages, (x, y) =>
             {
                 if (x.Code == "en") return -1;
@@ -91,6 +97,7 @@ namespace PlatformSwitcher
                 return x.DisplayName.CompareTo(y.DisplayName);
             });
             Current = AvailableLanguages[0];
+            return true;
         }
 
         public static string[] GetLanguages()
@@ -117,7 +124,8 @@ namespace PlatformSwitcher
             return 0;
         }
 
-        public static int SetLanguage(int i) => SetLanguage(AvailableLanguages[i].Code);
+        public static int SetLanguage(int i) =>
+            SetLanguage(i >= 0 && i < AvailableLanguages.Length ? AvailableLanguages[i].Code : "en");
 
 
     }

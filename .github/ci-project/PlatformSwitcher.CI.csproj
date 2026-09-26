@@ -6,7 +6,7 @@
     <AssemblyName>PlatformSwitcher.CI</AssemblyName>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
-    <PackageSourceDir Condition="'$(PackageSourceDir)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '..'))</PackageSourceDir>
+    <PackageSourceDir Condition="'$(PackageSourceDir)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '..', 'Packages', 'io.github.hoppou-legion-gateway.platformswitcher'))</PackageSourceDir>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);MSB3277;NU1701;CS0618;CS0649;CS0414;CS0169</NoWarn>
   </PropertyGroup>

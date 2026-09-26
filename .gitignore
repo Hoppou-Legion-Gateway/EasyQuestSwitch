@@ -10,6 +10,13 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Packages resolved by vrc-get/VCC (e.g. VRChat SDK); keep manifests and the embedded package
+/[Pp]ackages/*
+!/[Pp]ackages/manifest.json
+!/[Pp]ackages/packages-lock.json
+!/[Pp]ackages/vpm-manifest.json
+!/[Pp]ackages/io.github.hoppou-legion-gateway.platformswitcher/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/

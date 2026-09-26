@@ -39,11 +39,7 @@ jobs:
         uses: anatawa12/sh-actions/setup-vrc-get@1d155c7a26bcd0a54ffd9cb38fd66ab0d32d23cd # master
       - name: Install package into CI Unity project with vrc-get
         run: |
-          # Stage a clean copy of the package (no .git/.github dot-folders)
-          PKG_DIR="$RUNNER_TEMP/$PACKAGE_NAME"
-          rm -rf "$PKG_DIR" && mkdir -p "$PKG_DIR"
-          tar --exclude='./.*' -cf - . | tar -xf - -C "$PKG_DIR"
-          vrc-get user-package add "$PKG_DIR"
+          vrc-get user-package add "$PWD/Packages/$PACKAGE_NAME"
           vrc-get install -y --project "$CI_PROJECT" \
             "$PACKAGE_NAME"
       - name: Resolve VPM packages

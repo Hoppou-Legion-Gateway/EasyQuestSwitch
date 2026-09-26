@@ -2,7 +2,14 @@
 	"$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
 
 	"files": {
-		"includes": ["**"],
+		// Unity rewrites its own project files; don't fight its formatting
+		"includes": [
+			"**",
+			"!ProjectSettings/**",
+			"!Packages/manifest.json",
+			"!Packages/packages-lock.json",
+			"!Packages/vpm-manifest.json"
+		],
 		"ignoreUnknown": true
 	},
 

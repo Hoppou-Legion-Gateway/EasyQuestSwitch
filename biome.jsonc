@@ -5,7 +5,7 @@
 		// Unity rewrites its own project files; don't fight its formatting
 		"includes": [
 			"**",
-			"!ProjectSettings/**",
+			"!ProjectSettings",
 			"!Packages/manifest.json",
 			"!Packages/packages-lock.json",
 			"!Packages/vpm-manifest.json"

@@ -5,7 +5,7 @@
 	"SettingsButton": "設定",
 	"SettingsLanguage": "言語",
 	"SettingsListFormat": "UIの形式",
-	"SettingsListFormatArray": [ "簡易 (高速)", "順番変更可能 (低速)" ],
+	"SettingsListFormatArray": ["簡易 (高速)", "順番変更可能 (低速)"],
 	"SettingsApplyPC": "PCの設定を強制的に適用",
 	"SettingsApplyQuest": "Questの設定を強制的に適用",
 	"SettingsRemoveEQS": "「Platform Switcher」をSceneから削除",

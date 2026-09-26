@@ -5,7 +5,7 @@
 	"SettingsButton": "Ajustes",
 	"SettingsLanguage": "Idioma",
 	"SettingsListFormat": "Formato de lista",
-	"SettingsListFormatArray": [ "Simple (rápido)", "Reordenable (lento)" ],
+	"SettingsListFormatArray": ["Simple (rápido)", "Reordenable (lento)"],
 	"SettingsApplyPC": "Forzar aplicación de ajustes de PC",
 	"SettingsApplyQuest": "Forzar aplicación de ajustes de Quest",
 	"SettingsRemoveEQS": "Remover Platform Switcher de la escena",

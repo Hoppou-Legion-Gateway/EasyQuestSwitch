@@ -13,38 +13,47 @@ using System.Collections;
 namespace PlatformSwitcher
 {
     [ExecuteInEditMode, AddComponentMenu("")]
-    public class EQS_Data : MonoBehaviour
+    public class Data : MonoBehaviour
     {
+        public const string GameObjectName = "PlatformSwitcherData";
+        // Name used by scenes saved before the rename
+        private const string LegacyGameObjectName = "EQS_DATA";
+
+        public static Data FindInScene()
+        {
+            GameObject go = GameObject.Find(GameObjectName) ?? GameObject.Find(LegacyGameObjectName);
+            return go != null ? go.GetComponent<Data>() : null;
+        }
 
         [Serializable]
-        public class Data
+        public class Entry
         {
             public Object Target;
             public Type_Base Type;
             public bool Foldout;
         }
 
-        public List<Data> Objects;
+        public List<Entry> Objects;
         public int version = 0;
         private const int currentVersion = 131;
 
         public void ValidateData(int index)
         {
-            Data data = Objects[index];
+            Entry data = Objects[index];
             if (data.Target != null)
             {
-                for(int i = 0; i < Objects.Count; i++)
+                for (int i = 0; i < Objects.Count; i++)
                 {
                     if (i == index) continue;
                     if (Objects[i].Target == data.Target)
                     {
-                        Debug.LogError(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogComponentExists);
+                        Debug.LogError(Localization.Current.LogPrefix + Localization.Current.LogComponentExists);
                         DestroyImmediate(Objects[index].Type);
                         Objects.RemoveAt(index);
                         return;
                     }
                 }
-                if(data.Type != null)
+                if (data.Type != null)
                 {
                     // Target has been changed, remove current type and apply a new one
                     DestroyImmediate(Objects[index].Type);
@@ -53,7 +62,7 @@ namespace PlatformSwitcher
                 }
 
                 IEnumerable<Type> everyTypes = from t in Assembly.GetExecutingAssembly().GetTypes() where t.IsClass && t.Namespace == "PlatformSwitcher.Types" select t;
-                for(int i = 0; i < everyTypes.Count(); i++)
+                for (int i = 0; i < everyTypes.Count(); i++)
                 {
                     FieldInfo field = everyTypes.ElementAt(i).GetField("type", BindingFlags.NonPublic | BindingFlags.Instance);
                     if (field == null) continue;
@@ -64,9 +73,9 @@ namespace PlatformSwitcher
                         break;
                     }
                 }
-                if(Objects[index].Type == null)
+                if (Objects[index].Type == null)
                 {
-                    for(int i = 0; i < everyTypes.Count(); i++)
+                    for (int i = 0; i < everyTypes.Count(); i++)
                     {
                         FieldInfo field = everyTypes.ElementAt(i).GetField("type", BindingFlags.NonPublic | BindingFlags.Instance);
                         if (field == null) continue;
@@ -78,16 +87,16 @@ namespace PlatformSwitcher
                         }
                     }
                 }
-                if(Objects[index].Type == null)
+                if (Objects[index].Type == null)
                 {
-                    Debug.LogError(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogUnsupportedComponent);
+                    Debug.LogError(Localization.Current.LogPrefix + Localization.Current.LogUnsupportedComponent);
                     Objects[index].Target = null;
                     Objects[index].Foldout = false;
                     return;
                 }
                 Objects[index].Type.Setup(Objects[index].Target);
                 Objects[index].Foldout = true;
-            } 
+            }
             else if (data.Target == null && data.Type != null)
             {
                 // Target has been removed but not the corresponding type, remove the type
@@ -117,11 +126,11 @@ namespace PlatformSwitcher
         {
             if (Objects != null && currentVersion > version)
             {
-                foreach (Data d in Objects)
+                foreach (Entry d in Objects)
                 {
                     if (d.Type != null)
                     {
-                        if(d.Type.GetType() == typeof(Type_Material) || d.Type.GetType() == typeof(Type_Material)) 
+                        if (d.Type.GetType() == typeof(Type_Material) || d.Type.GetType() == typeof(Type_Material))
                         {
                             d.Type.Setup(d.Target, version);
                         }
@@ -134,12 +143,12 @@ namespace PlatformSwitcher
         public void OnSceneOpened()
         {
             buildInfo.NewBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            if (EditorPrefs.GetBool("EQS_PromptForPlatformChange", true))
+            if (EditorPrefs.GetBool(Prefs.PromptForPlatformChange, true))
             {
                 if (buildInfo.CachedBuildTarget != buildInfo.NewBuildTarget && Objects != null)
                 {
-                    string displayDialog = string.Format(EQS_Localization.Current.PopupTargetChanged, buildInfo.NewBuildTarget.ToString());
-                    if (EditorUtility.DisplayDialog("", displayDialog, EQS_Localization.Current.PopupAccept, EQS_Localization.Current.PopupDecline))
+                    string displayDialog = string.Format(Localization.Current.PopupTargetChanged, buildInfo.NewBuildTarget.ToString());
+                    if (EditorUtility.DisplayDialog("", displayDialog, Localization.Current.PopupAccept, Localization.Current.PopupDecline))
                     {
                         ApplyTarget(buildInfo.NewBuildTarget);
                         buildInfo.CachedBuildTarget = buildInfo.NewBuildTarget;
@@ -147,17 +156,17 @@ namespace PlatformSwitcher
                 }
             }
         }
-        
+
         public void ApplyTarget(BuildTarget newTarget)
         {
-            if(newTarget == BuildTarget.StandaloneWindows64 || newTarget == BuildTarget.Android)
+            if (newTarget == BuildTarget.StandaloneWindows64 || newTarget == BuildTarget.Android)
             {
-                for(int i = 0; i < Objects.Count; i++)
+                for (int i = 0; i < Objects.Count; i++)
                 {
-                    Data d = Objects[i];
-                    if(d.Target == null)
+                    Entry d = Objects[i];
+                    if (d.Target == null)
                     {
-                        Debug.LogErrorFormat(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogSwitchMissing, i);
+                        Debug.LogErrorFormat(Localization.Current.LogPrefix + Localization.Current.LogSwitchMissing, i);
                     }
                     else
                     {
@@ -168,17 +177,17 @@ namespace PlatformSwitcher
                         }
                         catch (Exception e)
                         {
-                            Debug.LogErrorFormat(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogSwitchFailure, i, d.Target.name, e.Message);
+                            Debug.LogErrorFormat(Localization.Current.LogPrefix + Localization.Current.LogSwitchFailure, i, d.Target.name, e.Message);
                         }
                     }
                 }
                 buildInfo.CachedBuildTarget = newTarget;
-                Debug.LogFormat(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogSwitchSuccess, newTarget);
+                Debug.LogFormat(Localization.Current.LogPrefix + Localization.Current.LogSwitchSuccess, newTarget);
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
             }
             else
             {
-                Debug.LogError(EQS_Localization.Current.LogPrefix + EQS_Localization.Current.LogSwitchUnsupported);
+                Debug.LogError(Localization.Current.LogPrefix + Localization.Current.LogSwitchUnsupported);
             }
         }
     }

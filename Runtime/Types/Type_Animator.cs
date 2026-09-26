@@ -18,7 +18,7 @@ namespace PlatformSwitcher.Types
         {
             base.Setup(type);
             Animator component = (Animator)type;
-            if(component.runtimeAnimatorController != null) Controller.Setup(component.runtimeAnimatorController);
+            if (component.runtimeAnimatorController != null) Controller.Setup(component.runtimeAnimatorController);
             CullingMode.Setup(component.cullingMode);
         }
 

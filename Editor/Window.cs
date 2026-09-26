@@ -10,27 +10,30 @@ using System.IO;
 namespace PlatformSwitcher
 {
 
-    public class EQS_Window : EditorWindow
+    public class Window : EditorWindow
     {
         private const string version = "1.4.0";
-        
+
         [MenuItem("Window/Platform Switcher")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(EQS_Window), false, "Platform Switcher");
+            GetWindow(typeof(Window), false, "Platform Switcher");
         }
 
         private SerializedObject serializedObject;
         private SerializedProperty eqsData;
         private ReorderableList reorderableList;
 
-        private EQS_Data _data;
-        private EQS_Data data {
-            get {
-                if (_data == null) _data = GameObject.Find("EQS_DATA")?.GetComponent<EQS_Data>();
+        private Data _data;
+        private Data data
+        {
+            get
+            {
+                if (_data == null) _data = Data.FindInScene();
                 return _data;
             }
-            set {
+            set
+            {
                 _data = value;
             }
         }
@@ -48,7 +51,7 @@ namespace PlatformSwitcher
         private float sideOffset = 0f;
         private bool showHierarchyIcon = true;
         private bool promptForPlatformChange = true;
-        
+
         [NonSerialized]
         private bool subscribedToEvents = false;
 
@@ -82,28 +85,28 @@ namespace PlatformSwitcher
 
             minSize = new Vector2(512, 400);
             CreatePlatformDependantHeader(EditorUserBuildSettings.activeBuildTarget);
-            logo = (Texture2D)Resources.Load("EQS_Logo", typeof(Texture2D));
+            logo = (Texture2D)Resources.Load("PlatformSwitcher/Logo", typeof(Texture2D));
 
-            EQS_Localization.LoadLanguages();
+            Localization.LoadLanguages();
             // Prior to 1.2, language preferences were set using the index order instead of the language code
-            if (System.String.IsNullOrEmpty(EditorPrefs.GetString("EQS_Language", null)))
+            if (System.String.IsNullOrEmpty(EditorPrefs.GetString(Prefs.Language, null)))
             {
-                switch(EditorPrefs.GetInt("EQS_Language", 0))
+                switch (EditorPrefs.GetInt(Prefs.Language, 0))
                 {
                     default:
                     case 0:
-                        EditorPrefs.SetString("EQS_Language", "en");
+                        EditorPrefs.SetString(Prefs.Language, "en");
                         break;
                     case 1:
-                        EditorPrefs.SetString("EQS_Language", "jp");
+                        EditorPrefs.SetString(Prefs.Language, "jp");
                         break;
                 }
             }
-            chosenLanguage = EQS_Localization.SetLanguage(EditorPrefs.GetString("EQS_Language", "en"));
-            chosenListFormat = EditorPrefs.GetInt("EQS_ListFormat", 0); // 0 - Simple, 1 - Reorderable
-            sideOffset = EditorPrefs.GetFloat("EQS_HierarchySideOffset", 0f);
-            showHierarchyIcon = EditorPrefs.GetBool("EQS_ShowHierarchyIcon", true);
-            promptForPlatformChange = EditorPrefs.GetBool("EQS_PromptForPlatformChange", true);
+            chosenLanguage = Localization.SetLanguage(EditorPrefs.GetString(Prefs.Language, "en"));
+            chosenListFormat = EditorPrefs.GetInt(Prefs.ListFormat, 0); // 0 - Simple, 1 - Reorderable
+            sideOffset = EditorPrefs.GetFloat(Prefs.HierarchySideOffset, 0f);
+            showHierarchyIcon = EditorPrefs.GetBool(Prefs.ShowHierarchyIcon, true);
+            promptForPlatformChange = EditorPrefs.GetBool(Prefs.PromptForPlatformChange, true);
 
             if (data != null)
             {
@@ -124,15 +127,15 @@ namespace PlatformSwitcher
 
         private void CreateEQS()
         {
-            GameObject sceneRefGO = new GameObject("EQS_DATA");
-            EQS_Data sceneRef = sceneRefGO.AddComponent<EQS_Data>();
+            GameObject sceneRefGO = new GameObject(Data.GameObjectName);
+            Data sceneRef = sceneRefGO.AddComponent<Data>();
             sceneRefGO.tag = "EditorOnly";
             sceneRefGO.hideFlags = HideFlags.HideInHierarchy;
             data = sceneRef;
             SetupEQS();
         }
 
-        private void RevealEQSData() { if(data != null) data.gameObject.hideFlags = HideFlags.None; }
+        private void RevealEQSData() { if (data != null) data.gameObject.hideFlags = HideFlags.None; }
         private void HideEQSData()
         {
             if (data != null)
@@ -147,7 +150,7 @@ namespace PlatformSwitcher
             serializedObject = new SerializedObject(data);
             eqsData = serializedObject.FindProperty("Objects");
 
-            if(chosenListFormat == 0) // Simple
+            if (chosenListFormat == 0) // Simple
             {
                 if (reorderableList != null)
                 {
@@ -163,7 +166,7 @@ namespace PlatformSwitcher
                 reorderableList.headerHeight = 0;
             }
 
-            EQS_HierarchyController.InitializeEQSHierarchy();
+            HierarchyController.InitializeEQSHierarchy();
         }
 
         private void RegisterReorderableListCallbacks()
@@ -183,7 +186,7 @@ namespace PlatformSwitcher
         }
 
         private void DestroyEQS()
-        {   
+        {
             serializedObject = null;
             DestroyImmediate(data.gameObject);
             _data = data = null;
@@ -205,7 +208,7 @@ namespace PlatformSwitcher
             SerializedProperty elementTarget = element.FindPropertyRelative("Target");
             EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width + 4, EditorGUIUtility.singleLineHeight), elementTarget, GUIContent.none);
-            if(EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
                 data.ValidateData(index);
@@ -256,10 +259,10 @@ namespace PlatformSwitcher
             SerializedProperty element = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
             float propertyHeight = EditorGUI.GetPropertyHeight(element, false); // true = include children
             float nestedHeight = 0.0f;
-            if(element.FindPropertyRelative("Foldout").boolValue)
+            if (element.FindPropertyRelative("Foldout").boolValue)
             {
                 UnityEngine.Object elementTypeObj = element.FindPropertyRelative("Type").objectReferenceValue;
-                if(elementTypeObj != null)
+                if (elementTypeObj != null)
                 {
                     SerializedObject elementType = new SerializedObject(elementTypeObj);
                     SerializedProperty elementTypeIterator = elementType.GetIterator();
@@ -292,7 +295,7 @@ namespace PlatformSwitcher
 
         private void DrawElementBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
-            if(reorderableList.count > 0)
+            if (reorderableList.count > 0)
             {
                 if (reorderableList.serializedProperty != null)
                 {
@@ -345,7 +348,7 @@ namespace PlatformSwitcher
 
         private void OnGUI()
         {
-            if(serializedObject != null) serializedObject.Update();
+            if (serializedObject != null) serializedObject.Update();
 
             // Header
             GUIStyle headerStyle = new GUIStyle("Box");
@@ -357,7 +360,7 @@ namespace PlatformSwitcher
 
                     GUILayout.FlexibleSpace();
                     Color guiBackgroundColor = GUI.backgroundColor;
-                    GUI.backgroundColor = new Color(1,1,1,0);
+                    GUI.backgroundColor = new Color(1, 1, 1, 0);
                     GUILayout.Box(logo, GUILayout.Width(150), GUILayout.Height(70));
                     GUI.backgroundColor = guiBackgroundColor;
                     GUILayout.FlexibleSpace();
@@ -365,12 +368,12 @@ namespace PlatformSwitcher
                     Rect versionLabelRect, settingsButtonRect;
                     versionLabelRect = settingsButtonRect = scope.rect;
 
-                    settingsButtonRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(EQS_Localization.Current.SettingsButton)).x - 40;
+                    settingsButtonRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(Localization.Current.SettingsButton)).x - 40;
                     settingsButtonRect.yMax = scope.rect.yMin + EditorGUIUtility.singleLineHeight + 2;
                     settingsButtonRect.x -= 3;
                     settingsButtonRect.y += 3;
-                    settingsMenu = GUI.Toggle(settingsButtonRect, settingsMenu, EQS_Localization.Current.SettingsButton, new GUIStyle("Button"));
-                    
+                    settingsMenu = GUI.Toggle(settingsButtonRect, settingsMenu, Localization.Current.SettingsButton, new GUIStyle("Button"));
+
                     string eqsVersion = $"v{version}";
                     versionLabelRect.xMin = scope.rect.xMax - EditorStyles.label.CalcSize(new GUIContent(eqsVersion)).x - 2;
                     versionLabelRect.yMin = scope.rect.yMax - EditorGUIUtility.singleLineHeight;
@@ -378,7 +381,7 @@ namespace PlatformSwitcher
                 }
             }
 
-            if(settingsMenu)
+            if (settingsMenu)
             {
 #if UNITY_2019_4_OR_NEWER
                 if (EditorSettings.assetPipelineMode != AssetPipelineMode.Version2)
@@ -386,8 +389,8 @@ namespace PlatformSwitcher
                     
                     using (new GUILayout.HorizontalScope())
                     {
-                        GUIContent helpBoxContent = new GUIContent(EQS_Localization.Current.SettingsAssetPipelineV2, EditorGUIUtility.IconContent("console.warnicon").image);
-                        GUIContent helpBoxButton = new GUIContent(EQS_Localization.Current.SettingsCacheButton);
+                        GUIContent helpBoxContent = new GUIContent(Localization.Current.SettingsAssetPipelineV2, EditorGUIUtility.IconContent("console.warnicon").image);
+                        GUIContent helpBoxButton = new GUIContent(Localization.Current.SettingsCacheButton);
                         float width = GUI.skin.button.CalcSize(helpBoxButton).x - 11;
                         float height = EditorStyles.helpBox.CalcHeight(helpBoxContent, EditorGUIUtility.currentViewWidth - width);
                         GUILayout.Box(helpBoxContent, EditorStyles.helpBox);
@@ -399,8 +402,8 @@ namespace PlatformSwitcher
                 {
                     using (new GUILayout.HorizontalScope())
                     {
-                        GUIContent helpBoxContent = new GUIContent(EQS_Localization.Current.SettingsCacheWarning, EditorGUIUtility.IconContent("console.warnicon").image);
-                        GUIContent helpBoxButton = new GUIContent(EQS_Localization.Current.SettingsCacheButton);
+                        GUIContent helpBoxContent = new GUIContent(Localization.Current.SettingsCacheWarning, EditorGUIUtility.IconContent("console.warnicon").image);
+                        GUIContent helpBoxButton = new GUIContent(Localization.Current.SettingsCacheButton);
                         float width = GUI.skin.button.CalcSize(helpBoxButton).x - 11;
                         float height = EditorStyles.helpBox.CalcHeight(helpBoxContent, EditorGUIUtility.currentViewWidth - width);
                         GUILayout.Box(helpBoxContent, EditorStyles.helpBox);
@@ -411,25 +414,25 @@ namespace PlatformSwitcher
 
                 using (new GUILayout.HorizontalScope())
                 {
-                    GUILayout.Label(new GUIContent(EQS_Localization.Current.SettingsLanguage));
-                    using(var changeLanguage = new EditorGUI.ChangeCheckScope())
+                    GUILayout.Label(new GUIContent(Localization.Current.SettingsLanguage));
+                    using (var changeLanguage = new EditorGUI.ChangeCheckScope())
                     {
-                        chosenLanguage = EditorGUILayout.Popup(chosenLanguage, EQS_Localization.GetLanguages());
-                        if(changeLanguage.changed)
+                        chosenLanguage = EditorGUILayout.Popup(chosenLanguage, Localization.GetLanguages());
+                        if (changeLanguage.changed)
                         {
-                            EQS_Localization.SetLanguage(chosenLanguage);
-                            EditorPrefs.SetString("EQS_Language", EQS_Localization.Current.Code);
+                            Localization.SetLanguage(chosenLanguage);
+                            EditorPrefs.SetString(Prefs.Language, Localization.Current.Code);
                         }
                     }
 
-                    GUILayout.Label(new GUIContent(EQS_Localization.Current.SettingsListFormat));
+                    GUILayout.Label(new GUIContent(Localization.Current.SettingsListFormat));
                     using (var changeListFormat = new EditorGUI.ChangeCheckScope())
                     {
-                        chosenListFormat = EditorGUILayout.Popup(chosenListFormat, EQS_Localization.Current.SettingsListFormatArray);
+                        chosenListFormat = EditorGUILayout.Popup(chosenListFormat, Localization.Current.SettingsListFormatArray);
                         if (changeListFormat.changed)
                         {
                             SetupEQS();
-                            EditorPrefs.SetInt("EQS_ListFormat", chosenListFormat);
+                            EditorPrefs.SetInt(Prefs.ListFormat, chosenListFormat);
                         }
                     }
                 }
@@ -438,12 +441,12 @@ namespace PlatformSwitcher
                 {
                     using (new GUILayout.HorizontalScope())
                     {
-                        if (GUILayout.Button(EQS_Localization.Current.SettingsApplyPC)) data.ApplyTarget(BuildTarget.StandaloneWindows64);
-                        if (GUILayout.Button(EQS_Localization.Current.SettingsApplyQuest)) data.ApplyTarget(BuildTarget.Android);
+                        if (GUILayout.Button(Localization.Current.SettingsApplyPC)) data.ApplyTarget(BuildTarget.StandaloneWindows64);
+                        if (GUILayout.Button(Localization.Current.SettingsApplyQuest)) data.ApplyTarget(BuildTarget.Android);
                     }
-                    if (GUILayout.Button(EQS_Localization.Current.SettingsRemoveEQS, GUILayout.Height(32)))
+                    if (GUILayout.Button(Localization.Current.SettingsRemoveEQS, GUILayout.Height(32)))
                     {
-                        if (EditorUtility.DisplayDialog(string.Empty, EQS_Localization.Current.PopupDeleteWarning, EQS_Localization.Current.PopupAccept, EQS_Localization.Current.PopupDecline))
+                        if (EditorUtility.DisplayDialog(string.Empty, Localization.Current.PopupDeleteWarning, Localization.Current.PopupAccept, Localization.Current.PopupDecline))
                         {
                             DestroyEQS();
                         }
@@ -453,29 +456,29 @@ namespace PlatformSwitcher
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
-                            EditorGUILayout.LabelField(EQS_Localization.Current.SettingsPromptForPlatformChange, EditorStyles.wordWrappedLabel);
+                            EditorGUILayout.LabelField(Localization.Current.SettingsPromptForPlatformChange, EditorStyles.wordWrappedLabel);
                             promptForPlatformChange = EditorGUILayout.Toggle(GUIContent.none, promptForPlatformChange);
                         }
 
                         if (changeOtherSettings.changed)
                         {
-                            EditorPrefs.SetBool("EQS_PromptForPlatformChange", promptForPlatformChange);
+                            EditorPrefs.SetBool(Prefs.PromptForPlatformChange, promptForPlatformChange);
                         }
                     }
                     EditorGUILayout.Space(10);
                     using (var changeHierarchySettings = new EditorGUI.ChangeCheckScope())
                     {
-                        EditorGUILayout.LabelField(EQS_Localization.Current.SettingsHierarchy, EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField(Localization.Current.SettingsHierarchy, EditorStyles.boldLabel);
                         float labelWithOriginal = EditorGUIUtility.labelWidth;
                         EditorGUIUtility.labelWidth = 180; // Gives more padding eg for Spanish
-                        showHierarchyIcon = EditorGUILayout.Toggle(EQS_Localization.Current.SettingsHierarchyIconShow, showHierarchyIcon);
-                        sideOffset = EditorGUILayout.Slider(EQS_Localization.Current.SettingsHierarchyIconOffset, sideOffset, -100f, 15f);
+                        showHierarchyIcon = EditorGUILayout.Toggle(Localization.Current.SettingsHierarchyIconShow, showHierarchyIcon);
+                        sideOffset = EditorGUILayout.Slider(Localization.Current.SettingsHierarchyIconOffset, sideOffset, -100f, 15f);
                         EditorGUIUtility.labelWidth = labelWithOriginal;
                         if (changeHierarchySettings.changed)
                         {
-                            EditorPrefs.SetFloat("EQS_HierarchySideOffset", sideOffset);
-                            EditorPrefs.SetBool("EQS_ShowHierarchyIcon", showHierarchyIcon);
-                            EQS_HierarchyController.InitializeEQSHierarchy();
+                            EditorPrefs.SetFloat(Prefs.HierarchySideOffset, sideOffset);
+                            EditorPrefs.SetBool(Prefs.ShowHierarchyIcon, showHierarchyIcon);
+                            HierarchyController.InitializeEQSHierarchy();
                             EditorApplication.DirtyHierarchyWindowSorting();
                         }
                     }
@@ -484,22 +487,22 @@ namespace PlatformSwitcher
 
                 using (new GUILayout.VerticalScope())
                 {
-                    GUILayout.Box(EQS_Localization.Current.SettingsExplanation, EditorStyles.wordWrappedLabel);
+                    GUILayout.Box(Localization.Current.SettingsExplanation, EditorStyles.wordWrappedLabel);
                     GUILayout.FlexibleSpace();
                     using (new EditorGUI.DisabledGroupScope(serializedObject == null))
                     {
                         using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
                         {
                             GUILayout.FlexibleSpace();
-                            GUIContent helpBoxContent = new GUIContent(EQS_Localization.Current.SettingsDebugOptions, EditorGUIUtility.IconContent("console.warnicon").image);
+                            GUIContent helpBoxContent = new GUIContent(Localization.Current.SettingsDebugOptions, EditorGUIUtility.IconContent("console.warnicon").image);
                             GUILayout.Box(helpBoxContent, EditorStyles.miniLabel);
                             GUILayout.FlexibleSpace();
-                            using(new GUILayout.VerticalScope())
+                            using (new GUILayout.VerticalScope())
                             {
                                 using (var toggle = new EditorGUI.ChangeCheckScope())
                                 {
-                                    revealEQSdata = GUILayout.Toggle(revealEQSdata, EQS_Localization.Current.SettingsDebugReveal);
-                                    if(toggle.changed)
+                                    revealEQSdata = GUILayout.Toggle(revealEQSdata, Localization.Current.SettingsDebugReveal);
+                                    if (toggle.changed)
                                     {
                                         if (revealEQSdata)
                                         {
@@ -517,9 +520,9 @@ namespace PlatformSwitcher
                     }
                     using (new GUILayout.HorizontalScope())
                     {
-                        GUILayout.Box(EQS_Localization.Current.SettingsFeedback, EditorStyles.wordWrappedLabel);
-                        if (GUILayout.Button(EQS_Localization.Current.SettingsTwitter, GUILayout.ExpandHeight(true))) Application.OpenURL("https://twitter.com/JordoVR");
-                        if (GUILayout.Button(EQS_Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/JordoVR/PlatformSwitcher");
+                        GUILayout.Box(Localization.Current.SettingsFeedback, EditorStyles.wordWrappedLabel);
+                        if (GUILayout.Button(Localization.Current.SettingsTwitter, GUILayout.ExpandHeight(true))) Application.OpenURL("https://twitter.com/JordoVR");
+                        if (GUILayout.Button(Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/JordoVR/PlatformSwitcher");
                     }
 
                 }
@@ -527,16 +530,16 @@ namespace PlatformSwitcher
             }
             else
             {
-                if(data == null)
+                if (data == null)
                 {
-                    if(GUILayout.Button(EQS_Localization.Current.ListSetupEQS)) CreateEQS();
-                } 
+                    if (GUILayout.Button(Localization.Current.ListSetupEQS)) CreateEQS();
+                }
                 else
                 {
                     // List header
                     using (new GUILayout.HorizontalScope())
                     {
-                        if (GUILayout.Toggle(false, EQS_Localization.Current.ListExpand, EditorStyles.toolbarButton))
+                        if (GUILayout.Toggle(false, Localization.Current.ListExpand, EditorStyles.toolbarButton))
                         {
                             for (int i = 0; i < eqsData.arraySize; i++)
                             {
@@ -545,7 +548,7 @@ namespace PlatformSwitcher
                             }
                             Repaint();
                         }
-                        if (GUILayout.Toggle(false, EQS_Localization.Current.ListFold, EditorStyles.toolbarButton))
+                        if (GUILayout.Toggle(false, Localization.Current.ListFold, EditorStyles.toolbarButton))
                         {
                             for (int i = 0; i < eqsData.arraySize; i++)
                             {
@@ -565,7 +568,7 @@ namespace PlatformSwitcher
                                 OnAddCallback(reorderableList.serializedProperty);
                                 reorderableList.index++;
                             }
-                            scrollPos = new Vector2(0,Mathf.Infinity);
+                            scrollPos = new Vector2(0, Mathf.Infinity);
                         }
                         if (chosenListFormat == 1) // Reorderable
                         {
@@ -663,7 +666,7 @@ namespace PlatformSwitcher
                         }
                     }
 
-                    EditorGUILayout.LabelField(new GUIContent(EQS_Localization.Current.ListDragAndDrop), new GUIStyle(EditorStyles.toolbar)
+                    EditorGUILayout.LabelField(new GUIContent(Localization.Current.ListDragAndDrop), new GUIStyle(EditorStyles.toolbar)
                     {
                         fixedWidth = EditorGUIUtility.currentViewWidth,
                         alignment = TextAnchor.MiddleCenter,

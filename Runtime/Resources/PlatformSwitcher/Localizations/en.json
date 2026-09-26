@@ -14,7 +14,7 @@
 	"SettingsAssetPipelineV2": "You are not using Asset Pipeline v2, switching to it may give you faster platform switching times.",
 	"SettingsExplanation": "Welcome to Platform Switcher! To begin with, add a new element to the list with '+' and drag a component from the scene into the object field, several options related to that component will appear, you can configure each for the PC or Quest version of the scene respectively.\nThese options will be automatically applied to the scene when you change the Unity project build target.",
 	"SettingsDebugOptions": "Debug options",
-	"SettingsDebugReveal": "Reveal EQS_Data GameObject",
+	"SettingsDebugReveal": "Reveal PlatformSwitcherData GameObject",
 	"SettingsFeedback": "If you have any issues with the program, do not hesitate to look up the github code or contact me on twitter!",
 	"SettingsGithub": "Github",
 	"SettingsTwitter": "Twitter",

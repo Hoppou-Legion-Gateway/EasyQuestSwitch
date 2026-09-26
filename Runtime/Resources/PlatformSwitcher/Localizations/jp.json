@@ -14,7 +14,7 @@
 	"SettingsAssetPipelineV2": "Asset Pipeline v2を使用していないので、これに切り替えるとプラットフォームの切り替え時間が短縮されるかもしれません。",
 	"SettingsExplanation": "ようこそ、「Platform Switcher」へ、まずリストに機能を使いたいGameObjectを「+」で追加し\nシーンの中から任意のコンポーネントを設定欄にドラッグ&ドロップします。\nすると、そのコンポーネントに関連するオプションが表示されますので、\nSceneのPCバージョンとQuestバージョンを適宜設定します。\nこれらのオプションは、UnityプロジェクトのPlatformを変更すると、\nシーンに自動的に適用されます。",
 	"SettingsDebugOptions": "Debugオプション",
-	"SettingsDebugReveal": "EQS_Data管理用 GameObjectを表示",
+	"SettingsDebugReveal": "PlatformSwitcherData管理用 GameObjectを表示",
 	"SettingsFeedback": "プログラムに何か問題があれば、GitHubのコードを調べるか、Twitterで私に連絡してください!",
 	"SettingsGithub": "Github",
 	"SettingsTwitter": "Twitter",

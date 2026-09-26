@@ -39,7 +39,7 @@ namespace PlatformSwitcher.Types
         public override void Process(Object type, BuildTarget buildTarget)
         {
             Material material = (Material)type;
-            if(Shader.Get(buildTarget) != null)
+            if (Shader.Get(buildTarget) != null)
             {
                 switch (buildTarget)
                 {
@@ -51,9 +51,9 @@ namespace PlatformSwitcher.Types
                         break;
                 }
             }
-            else if(Shader.Get(buildTarget) == null && !string.IsNullOrEmpty(ShaderPath.Get(buildTarget)))
+            else if (Shader.Get(buildTarget) == null && !string.IsNullOrEmpty(ShaderPath.Get(buildTarget)))
             {
-                switch(buildTarget)
+                switch (buildTarget)
                 {
                     case BuildTarget.StandaloneWindows:
                         Shader.PC = UnityEngine.Shader.Find(ShaderPath.PC);
@@ -64,7 +64,7 @@ namespace PlatformSwitcher.Types
                 }
             }
 
-            if(Shader.Get(buildTarget) == null)
+            if (Shader.Get(buildTarget) == null)
             {
                 throw new MissingReferenceException();
             }

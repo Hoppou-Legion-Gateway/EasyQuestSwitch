@@ -27,7 +27,7 @@ namespace PlatformSwitcher.Types
             AnimateCrossFading.Setup(component.animateCrossFading);
             LOD[] lods = component.GetLODs();
             Debug.Log(lods.Length);
-            for(int i = 0; i < lods.Length; i++)
+            for (int i = 0; i < lods.Length; i++)
             {
                 Percentage.Add(new SharedFloat());
                 Percentage[i].Setup(lods[i].screenRelativeTransitionHeight * 100);

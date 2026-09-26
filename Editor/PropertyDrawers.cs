@@ -12,7 +12,7 @@ namespace PlatformSwitcher.Fields
     public class BaseDrawer : PropertyDrawer
     {
         protected float labelRatio = 0.25f;
-        protected float optionRatio = 0.735f/2;
+        protected float optionRatio = 0.735f / 2;
         protected float dividerRatio = 0.02f;
 
         protected Rect labelRect;

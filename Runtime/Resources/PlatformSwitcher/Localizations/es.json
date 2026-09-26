@@ -14,7 +14,7 @@
 	"SettingsAssetPipelineV2": "No estas usando Asset Pipeline v2, cambiarlo puede dar tiempos de cambio de plataforma más rápidos.",
 	"SettingsExplanation": "Bienvenido a Platform Switcher! Para comenzar, agrega un elemento a la lista con '+' y arrastra un componente de la escena al campo de objetos, varias opciones relacionadas a ese componente apareceran, puedes configurar cada uno para su versión de PC o Quest respectivamente.\nEstas opciones serán aplicadas automáticamente a la escena cuando cambies la plataforma de compilación del proyecto de Unity.",
 	"SettingsDebugOptions": "Opciones de desarrollador",
-	"SettingsDebugReveal": "Revelar EQS_Data GameObject",
+	"SettingsDebugReveal": "Revelar PlatformSwitcherData GameObject",
 	"SettingsFeedback": "Si tienes algún problema con el programa, no dudes en echar un vistazo al codigo de github o contactame en twitter!",
 	"SettingsGithub": "Github",
 	"SettingsTwitter": "Twitter",

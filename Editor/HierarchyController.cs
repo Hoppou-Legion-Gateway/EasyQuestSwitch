@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace PlatformSwitcher
 {
-    public static class EQS_HierarchyController
+    public static class HierarchyController
     {
         private static GUIStyle entryStyle;
-        private static EQS_Data data;
+        private static Data data;
         private static bool initialized;
         private static Texture2D logo;
         private static float sideOffset = 0f;
@@ -22,15 +22,15 @@ namespace PlatformSwitcher
         {
             if (logo == null)
             {
-                logo = (Texture2D)Resources.Load("EQS_Logo_Crop", typeof(Texture2D));
+                logo = (Texture2D)Resources.Load("PlatformSwitcher/Logo_Crop", typeof(Texture2D));
             }
             if (data == null)
             {
-                data = GameObject.Find("EQS_DATA")?.GetComponent<EQS_Data>();
+                data = Data.FindInScene();
             }
 
-            sideOffset = EditorPrefs.GetFloat("EQS_HierarchySideOffset", 0f);
-            showHierarchyIcon = EditorPrefs.GetBool("EQS_ShowHierarchyIcon", true);
+            sideOffset = EditorPrefs.GetFloat(Prefs.HierarchySideOffset, 0f);
+            showHierarchyIcon = EditorPrefs.GetBool(Prefs.ShowHierarchyIcon, true);
             if (!showHierarchyIcon)
             {
                 EditorApplication.hierarchyWindowItemOnGUI -= OnHierarchyItemGUI;
@@ -87,7 +87,7 @@ namespace PlatformSwitcher
             var evt = Event.current;
             if (evt.type == EventType.MouseUp && newRect.Contains(evt.mousePosition))
             {
-                EditorWindow.GetWindow<EQS_Window>(false, "Platform Switcher");
+                EditorWindow.GetWindow<Window>(false, "Platform Switcher");
                 var tSo = new SerializedObject(data);
                 tSo.FindProperty("Objects").GetArrayElementAtIndex(targetIndex).FindPropertyRelative("Foldout").boolValue =
                   true;

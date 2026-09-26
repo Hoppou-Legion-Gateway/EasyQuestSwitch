@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace PlatformSwitcher
 {
-    public class EQS_Watcher : IActiveBuildTargetChanged
+    public class Watcher : IActiveBuildTargetChanged
     {
         [InitializeOnLoadMethod]
         private static void OnInitialize()
@@ -19,7 +19,7 @@ namespace PlatformSwitcher
 
         private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
         {
-            EQS_Data data = GameObject.Find("EQS_DATA")?.GetComponent<EQS_Data>();
+            Data data = Data.FindInScene();
             data?.OnSceneOpened();
         }
 
@@ -27,7 +27,7 @@ namespace PlatformSwitcher
 
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            EQS_Data data = GameObject.Find("EQS_DATA")?.GetComponent<EQS_Data>();
+            Data data = Data.FindInScene();
             data?.OnChangedBuildTarget(newTarget);
         }
     }

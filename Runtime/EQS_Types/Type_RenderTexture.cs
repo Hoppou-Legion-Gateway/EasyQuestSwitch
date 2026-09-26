@@ -1,10 +1,10 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 using UnityEngine.Experimental.Rendering;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_RenderTexture : Type_Base

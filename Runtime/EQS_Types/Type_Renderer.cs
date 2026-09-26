@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_Renderer : Type_Base

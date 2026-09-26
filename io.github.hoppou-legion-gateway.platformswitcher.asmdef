@@ -1,11 +1,10 @@
 {
-    "name": "vrchat.jordo.easyquestswitch.Editor",
+    "name": "io.github.hoppou-legion-gateway.platformswitcher",
+    "rootNamespace": "",
     "references": [
-        "vrchat.jordo.easyquestswitch"
+        "GUID:a1653399f63795746b1857281d1e400d"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

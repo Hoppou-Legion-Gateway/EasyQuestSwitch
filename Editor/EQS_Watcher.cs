@@ -7,7 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EasyQuestSwitch
+namespace PlatformSwitcher
 {
     public class EQS_Watcher : IActiveBuildTargetChanged
     {

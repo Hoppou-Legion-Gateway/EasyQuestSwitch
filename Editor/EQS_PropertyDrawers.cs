@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using EasyQuestSwitch.Types;
+using PlatformSwitcher.Types;
 using UnityEditorInternal;
 
-namespace EasyQuestSwitch.Fields
+namespace PlatformSwitcher.Fields
 {
 
     public class BaseDrawer : PropertyDrawer

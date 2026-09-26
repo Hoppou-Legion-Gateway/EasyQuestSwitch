@@ -1,0 +1,44 @@
+# Verifies that Platform Switcher installs as a VPM package with vrc-get
+# and that its sources compile against the Unity reference assemblies.
+
+name: .NET
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+  workflow_dispatch:
+
+env:
+  PACKAGE_NAME: io.github.hoppou-legion-gateway.platformswitcher
+  CI_PROJECT: .github/ci-project
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - uses: anatawa12/sh-actions/setup-vrc-get@master
+      - name: Install package into CI Unity project with vrc-get
+        run: |
+          # Stage a clean copy of the package (no .git/.github dot-folders)
+          PKG_DIR="$RUNNER_TEMP/$PACKAGE_NAME"
+          rm -rf "$PKG_DIR" && mkdir -p "$PKG_DIR"
+          tar --exclude='./.*' -cf - . | tar -xf - -C "$PKG_DIR"
+          vrc-get user-package add "$PKG_DIR"
+          vrc-get install -y --project "$CI_PROJECT" \
+            "$PACKAGE_NAME"
+      - uses: anatawa12/sh-actions/resolve-vpm-packages@master
+        with:
+          project-path: ${{ env.CI_PROJECT }}
+      - name: Restore dependencies
+        run: dotnet restore "$CI_PROJECT/PlatformSwitcher.CI.csproj"
+      - name: Build
+        run: dotnet build --no-restore "$CI_PROJECT/PlatformSwitcher.CI.csproj"

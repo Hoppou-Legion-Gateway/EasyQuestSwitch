@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 using VRCSDK2;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_VRC_SpatialAudioSource : Type_Base

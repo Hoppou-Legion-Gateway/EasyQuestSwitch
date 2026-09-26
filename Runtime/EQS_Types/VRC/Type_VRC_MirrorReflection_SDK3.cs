@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Components;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_VRC_MirrorReflection : Type_Behaviour

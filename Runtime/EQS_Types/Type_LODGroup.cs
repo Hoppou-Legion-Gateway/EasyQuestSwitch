@@ -1,11 +1,11 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_LODGroup : Type_Base

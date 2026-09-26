@@ -1,9 +1,9 @@
 {
-  "name": "hoppou-legion-gateway.easyquestswitch",
-  "displayName": "EasyQuestSwitch",
+  "name": "io.github.hoppou-legion-gateway.platformswitcher",
+  "displayName": "Platform Switcher",
   "version": "1.5.0",
-  "unity": "2019.4",
-  "description": "EasyQuestSwitch is a Unity editor tool developed for VRChat world creators, it can automate changes to components within a scene as soon as the build platform is changed from PC to Android (for Oculus Quest) or vice versa.",
+  "unity": "2022.3",
+  "description": "Platform Switcher is a Unity editor tool developed for VRChat world creators, it can automate changes to components within a scene as soon as the build platform is changed from PC to Android (for Oculus Quest) or vice versa.",
   "author": {
     "name": "Hoppou Legion Gateway",
     "email": "me@hoppou.dev",
@@ -13,5 +13,8 @@
   "vpmDependencies": {},
   "legacyFolders": {
     "Assets\\EasyQuestSwitch": ""
-  }
+  },
+  "legacyPackages": [
+    "vrchat.jordo.easyquestswitch"
+  ]
 }

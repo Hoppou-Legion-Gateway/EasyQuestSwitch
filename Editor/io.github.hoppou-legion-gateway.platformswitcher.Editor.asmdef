@@ -1,0 +1,17 @@
+{
+    "name": "io.github.hoppou-legion-gateway.platformswitcher.Editor",
+    "references": [
+        "io.github.hoppou-legion-gateway.platformswitcher"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

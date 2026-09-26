@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    CI-only compile check. Builds the package sources that vrc-get installed into
+    Packages/ against Unity reference assemblies, with UNITY_EDITOR defined.
+    VRChat SDK / Bakery specific types are behind their own defines and are skipped.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>PlatformSwitcher.CI</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);UNITY_EDITOR</DefineConstants>
+    <PackageSourceDir>$(MSBuildThisFileDirectory)Packages/io.github.hoppou-legion-gateway.platformswitcher/</PackageSourceDir>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Unity reference assemblies target .NET Framework; silence version-mismatch noise -->
+    <NoWarn>$(NoWarn);MSB3277;NU1701;CS0618;CS0649;CS0414;CS0169</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(PackageSourceDir)Runtime/**/*.cs" />
+    <Compile Include="$(PackageSourceDir)Editor/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="Unity3D.SDK" Version="2021.1.14.1" />
+    <PackageReference Include="Unity3D.UnityEngine.UI" Version="2018.3.5.1" />
+    <!-- UI package pulls in a 2018 UnityEngine.dll; use the newer one from Unity3D.SDK instead -->
+    <PackageReference Include="Unity3D.UnityEngine" Version="2018.3.5.1" ExcludeAssets="all" />
+  </ItemGroup>
+
+  <Target Name="EnsurePackageInstalled" BeforeTargets="BeforeBuild">
+    <Error Condition="!Exists('$(PackageSourceDir)package.json')"
+           Text="Package not found at $(PackageSourceDir). Install it with vrc-get first." />
+  </Target>
+</Project>

@@ -4,20 +4,20 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 using System.IO;
 
-namespace EasyQuestSwitch
+namespace PlatformSwitcher
 {
 
     public class EQS_Window : EditorWindow
     {
         private const string version = "1.4.0";
         
-        [MenuItem("Window/Easy Quest Switch")]
+        [MenuItem("Window/Platform Switcher")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(EQS_Window), false, "Easy Quest Switch");
+            GetWindow(typeof(EQS_Window), false, "Platform Switcher");
         }
 
         private SerializedObject serializedObject;
@@ -519,7 +519,7 @@ namespace EasyQuestSwitch
                     {
                         GUILayout.Box(EQS_Localization.Current.SettingsFeedback, EditorStyles.wordWrappedLabel);
                         if (GUILayout.Button(EQS_Localization.Current.SettingsTwitter, GUILayout.ExpandHeight(true))) Application.OpenURL("https://twitter.com/JordoVR");
-                        if (GUILayout.Button(EQS_Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/JordoVR/EasyQuestSwitch");
+                        if (GUILayout.Button(EQS_Localization.Current.SettingsGithub, GUILayout.ExpandHeight(true))) Application.OpenURL("https://github.com/JordoVR/PlatformSwitcher");
                     }
 
                 }

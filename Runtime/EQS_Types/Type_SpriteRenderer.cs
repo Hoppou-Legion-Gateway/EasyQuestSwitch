@@ -1,9 +1,9 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_SpriteRenderer : Type_Base

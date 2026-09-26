@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace EasyQuestSwitch
+namespace PlatformSwitcher
 {
     public static class EQS_HierarchyController
     {
@@ -87,7 +87,7 @@ namespace EasyQuestSwitch
             var evt = Event.current;
             if (evt.type == EventType.MouseUp && newRect.Contains(evt.mousePosition))
             {
-                EditorWindow.GetWindow<EQS_Window>(false, "Easy Quest Switch");
+                EditorWindow.GetWindow<EQS_Window>(false, "Platform Switcher");
                 var tSo = new SerializedObject(data);
                 tSo.FindProperty("Objects").GetArrayElementAtIndex(targetIndex).FindPropertyRelative("Foldout").boolValue =
                   true;

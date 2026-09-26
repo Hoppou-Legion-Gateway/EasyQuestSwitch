@@ -1,9 +1,9 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
-using EasyQuestSwitch.Fields;
+using PlatformSwitcher.Fields;
 using UnityEditor;
 
-namespace EasyQuestSwitch.Types
+namespace PlatformSwitcher.Types
 {
     [AddComponentMenu("")]
     public class Type_Camera : Type_Behaviour

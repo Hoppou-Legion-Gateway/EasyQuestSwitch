@@ -374,7 +374,7 @@ namespace PlatformSwitcher
                     GUILayout.FlexibleSpace();
                     Color guiBackgroundColor = GUI.backgroundColor;
                     GUI.backgroundColor = new Color(1, 1, 1, 0);
-                    GUILayout.Box(logo, GUILayout.Width(150), GUILayout.Height(70));
+                    GUILayout.Box(logo, GUILayout.Width(200), GUILayout.Height(72));
                     GUI.backgroundColor = guiBackgroundColor;
                     GUILayout.FlexibleSpace();
 

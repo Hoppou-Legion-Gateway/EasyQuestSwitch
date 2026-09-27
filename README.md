@@ -1,6 +1,6 @@
 <div align="center">
 
-![Platform Switcher Logo](Resources/logo.png)
+![Platform Switcher Logo](Packages/io.github.hoppou-legion-gateway.platformswitcher/Runtime/Resources/PlatformSwitcher/Logo.png)
 
 [![Built with .NET](https://badges.hoppou.dev/badge?title=Built%20with&label=dotNet&color=512BD4&icon=dotnet)](https://dotnet.microsoft.com/en-us/)
 [![Built for Unity](https://badges.hoppou.dev/badge?title=Built%20for&label=Unity&color=FFFFFF&icon=unity)](https://unity.com/)

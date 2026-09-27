@@ -1,15 +1,14 @@
-# Platform Switcher
+<div align="center">
+
+![Platform Switcher Logo](Resources/logo.png)
+
+[![Built with .NET](https://badges.hoppou.dev/badge?title=Built%20with&label=dotNet&color=512BD4&icon=dotnet)](https://dotnet.microsoft.com/en-us/)
+[![Built for Unity](https://badges.hoppou.dev/badge?title=Built%20for&label=Unity&color=FFFFFF&icon=unity)](https://unity.com/)
+[![Available on VPM](https://badges.hoppou.dev/badge?title=Available%20on&label=VPM&color=1FBFDF&icon=vrchat)]()
+[![CI Passing](https://badges.hoppou.dev/ci/Hoppou-Legion-Gateway/PlatformSwitcher/dotnet.yml)](https://github.com/HoppouDev/badges/actions/workflows/rust.yml)
+
+</div>
 
 Platform Switcher is a Unity editor tool developed for VRChat world creators, it can automate changes to components within a scene as soon as the build platform is changed from PC to Mobile or vice versa.
 
 Based on [EasyQuestSwitch](https://github.com/vrchat-community/EasyQuestSwitch) by Jordo.
-
-## Adding a new localization
-
-It is possible to create your own localizations by creating a new JSON file in `Packages/io.github.hoppou-legion-gateway.platformswitcher/Runtime/Resources/PlatformSwitcher/Localizations/`, use `en.json` as a template.
-
-## Adding custom Types
-
-Tutorial TBD, but you can check `Packages/io.github.hoppou-legion-gateway.platformswitcher/Runtime/Types/` and try to figure it out.
-
-![](https://i.imgur.com/aYvf4yl.png)

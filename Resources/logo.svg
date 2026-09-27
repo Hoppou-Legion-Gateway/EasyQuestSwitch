@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" id="logo_small" xmlns:bx="https://boxy-svg.com">
+  <g style="filter: url(&quot;#drop-shadow-filter-1&quot;);" transform="matrix(1, 0, 0, 1, 277.706543, 19.681065)">
+    <text style="fill: rgb(255, 255, 255); font-family: &quot;Archivo Black&quot;; font-size: 72px; font-weight: 900; paint-order: stroke; stroke-linecap: round; stroke-linejoin: round; stroke-width: 8px; white-space: pre;" transform="matrix(1.093238, 0, 0, 1.093238, -16.938679, -13.103317)"><textPath href="#text-path-0">platform</textPath></text>
+    <text style="fill: rgb(255, 255, 255); font-family: &quot;BBH Bartle&quot;; font-size: 31.4493px; paint-order: stroke; stroke-linecap: round; stroke-linejoin: round; stroke-width: 8px; white-space: pre;" transform="matrix(0.912165, 0, 0, 0.807629, 18.752775, -22.299356)"><textPath href="#text-path-1">switcher</textPath></text>
+  </g>
+  <defs>
+    <filter id="drop-shadow-filter-1" bx:preset="drop-shadow 1 0 0 8 0.5 #000" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="0"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="#000"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="filter-1" bx:preset="drop-shadow 1 0 0 8 0.5 #000" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="0"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="feFuncA-1" type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="#000"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <path id="text-path-0" d="M 20.93199920654297 102.50392532348633 Q 198.90337371826172 16.13790512084961 376.87474822998047 102.50392532348633"/>
+    <path id="text-path-1" d="M 21.295000076293945 164.38392639160156 Q 199.2663745880127 78.01790618896484 377.23774909973145 164.38392639160156"/>
+    <style bx:fonts="Archivo Black">@import url(https://fonts.googleapis.com/css2?family=Archivo+Black%3Aital%2Cwght%400%2C400&amp;display=swap);</style>
+    <style bx:fonts="BBH Bartle">@import url(https://fonts.googleapis.com/css2?family=BBH+Bartle%3Aital%2Cwght%400%2C400&amp;display=swap);</style>
+    <bx:export>
+      <bx:file format="svg" href="#object-0"/>
+      <bx:file format="svg" href="#object-1" path="Untitled 2.svg"/>
+      <bx:file format="png" href="#object-2" colorspace="srgb" width="108" height="112"/>
+      <bx:file format="png" path="logo_small.png" colorspace="srgb">
+        <bx:variant scale="2" suffix="@2x"/>
+        <bx:variant scale="4" suffix="@4x"/>
+        <bx:variant scale="8" suffix="@8x"/>
+      </bx:file>
+      <bx:file format="png" href="#logo" path="logo.png" colorspace="srgb">
+        <bx:variant scale="2" suffix="@2x"/>
+        <bx:variant scale="4" suffix="@4x"/>
+        <bx:variant scale="8" suffix="@8x"/>
+      </bx:file>
+    </bx:export>
+    <view id="logo" viewBox="256 0 400.167 143.642">
+      <title>View 1</title>
+    </view>
+  </defs>
+  <g style="filter: url(&quot;#filter-1&quot;);" transform="matrix(1, 0, 0, 1, -169.980576, -81.584755)" id="object-2">
+    <text style="fill: rgb(255, 255, 255); font-family: &quot;Archivo Black&quot;; font-size: 72px; font-weight: 900; paint-order: stroke; stroke-linecap: round; stroke-linejoin: round; stroke-width: 8px; white-space: pre;" y="172.604" x="193.551" id="object-1">P</text>
+    <text style="fill: rgb(255, 255, 255); font-family: &quot;Archivo Black&quot;; font-size: 72px; font-weight: 900; paint-order: stroke; stroke-linecap: round; stroke-linejoin: round; stroke-width: 8px; white-space: pre;" y="166.605" x="222.423" id="object-0">S</text>
+  </g>
+</svg>

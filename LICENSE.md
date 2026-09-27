@@ -1,0 +1,1 @@
+Packages/io.github.hoppou-legion-gateway.platformswitcher/LICENSE.md

@@ -13,6 +13,8 @@
 
 <br>
 
-Platform Switcher is a Unity editor tool developed for VRChat world creators, it can automate changes to components within a scene as soon as the build platform is changed from PC to Mobile or vice versa.
+Platform Switcher is a Unity editor tool developed for VRChat world creators, it
+can automate changes to components within a scene as soon as the build platform
+is changed from PC to Mobile or vice versa.
 
 Based on [EasyQuestSwitch](https://github.com/vrchat-community/EasyQuestSwitch) by Jordo.

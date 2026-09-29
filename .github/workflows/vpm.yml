@@ -1,0 +1,62 @@
+name: VPM
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  PACKAGE_NAME: io.github.hoppou-legion-gateway.platformswitcher
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - name: Build package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          manifest="Packages/$PACKAGE_NAME/package.json"
+          jq --arg version "$VERSION" '.version = $version' "$manifest" > "$RUNNER_TEMP/package.json"
+          mv "$RUNNER_TEMP/package.json" "$manifest"
+          zip_name="$PACKAGE_NAME-$VERSION.zip"
+          (cd "Packages/$PACKAGE_NAME" && zip -r "$GITHUB_WORKSPACE/$zip_name" .)
+          sha=$(sha256sum "$zip_name" | cut -d' ' -f1)
+          url="https://github.com/$GITHUB_REPOSITORY/releases/download/v$VERSION/$zip_name"
+          jq --arg url "$url" --arg sha "$sha" '. + {url: $url, zipSHA256: $sha}' \
+            "Packages/$PACKAGE_NAME/package.json" > package.json
+      - name: Generate release notes
+        id: notes
+        uses: orhun/git-cliff-action@a9a95522b26fe6403f7bb24031f21fb573d0f5ff
+        with:
+          config: cliff.toml
+          args: --latest --strip header
+        env:
+          OUTPUT: ${{ runner.temp }}/RELEASE_NOTES.md
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          NOTES_FILE: ${{ steps.notes.outputs.changelog }}
+        run: |
+          gh release create "v$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --title "v$VERSION" \
+            --notes-file "$NOTES_FILE" \
+            "$PACKAGE_NAME-$VERSION.zip" package.json
